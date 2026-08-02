@@ -83,3 +83,122 @@
 #include <iomanip>
 using namespace std;
 
+struct Student {
+    string name;
+    int id;
+    vector<double> scores;
+};
+
+double calculateAverage(const vector<double>& scores) {
+    if (scores.empty()) {
+        return 0.0;
+    }
+
+    double total = 0.0;
+    for (double score : scores) {
+        total += score;
+    }
+    return total / scores.size();
+}
+
+void addStudent(vector<Student>& students) {
+    Student student;
+    cout << "Student name: ";
+    getline(cin >> ws, student.name);
+    cout << "Student ID: ";
+    cin >> student.id;
+
+    int count;
+    cout << "How many scores? ";
+    cin >> count;
+
+    for (int i = 0; i < count; ++i) {
+        double score;
+        cout << "Enter score " << (i + 1) << ": ";
+        cin >> score;
+        student.scores.push_back(score);
+    }
+
+    students.push_back(student);
+    cout << "Student \"" << student.name << "\" added successfully." << endl;
+}
+
+void displayAllStudents(const vector<Student>& students) {
+    if (students.empty()) {
+        cout << "No students have been added yet." << endl;
+        return;
+    }
+
+    cout << left << setw(20) << "Name" << setw(10) << "ID" << setw(20) << "Scores" << "Average" << endl;
+    cout << string(60, '-') << endl;
+
+    for (const Student& student : students) {
+        cout << left << setw(20) << student.name
+             << setw(10) << student.id;
+
+        for (size_t i = 0; i < student.scores.size(); ++i) {
+            if (i > 0) {
+                cout << ", ";
+            }
+            cout << student.scores[i];
+        }
+
+        cout << setw(20 - static_cast<int>(student.scores.size() * 4)) << "";
+        cout << fixed << setprecision(2) << calculateAverage(student.scores) << endl;
+    }
+}
+
+void calculateAverageForStudent(const vector<Student>& students) {
+    int id;
+    cout << "Enter student ID: ";
+    cin >> id;
+
+    for (const Student& student : students) {
+        if (student.id == id) {
+            cout << student.name << "'s average score: "
+                 << fixed << setprecision(2) << calculateAverage(student.scores) << endl;
+            return;
+        }
+    }
+
+    cout << "Error: Student ID not found." << endl;
+}
+
+int main() {
+    vector<Student> students;
+    int choice;
+
+    do {
+        cout << "===============================" << endl;
+        cout << "   STUDENT RECORD SYSTEM MENU" << endl;
+        cout << "===============================" << endl;
+        cout << "1. Add student" << endl;
+        cout << "2. Display all students" << endl;
+        cout << "3. Calculate average score" << endl;
+        cout << "4. Quit" << endl;
+        cout << "Enter your choice (1-4): ";
+        cin >> choice;
+        cin.ignore();
+
+        switch (choice) {
+            case 1:
+                addStudent(students);
+                break;
+            case 2:
+                displayAllStudents(students);
+                break;
+            case 3:
+                calculateAverageForStudent(students);
+                break;
+            case 4:
+                cout << "Goodbye!" << endl;
+                break;
+            default:
+                cout << "Error: Invalid choice." << endl;
+                break;
+        }
+    } while (choice != 4);
+
+    return 0;
+}
+

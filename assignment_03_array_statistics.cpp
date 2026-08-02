@@ -40,5 +40,69 @@
 // =============================================================================
 
 #include <iostream>
+#include <iomanip>
+#include <vector>
 using namespace std;
+
+int calculateSum(const vector<int>& numbers) {
+    int sum = 0;
+    for (int value : numbers) {
+        sum += value;
+    }
+    return sum;
+}
+
+double calculateAverage(const vector<int>& numbers) {
+    if (numbers.empty()) {
+        return 0.0;
+    }
+
+    return static_cast<double>(calculateSum(numbers)) / numbers.size();
+}
+
+int findMaximum(const vector<int>& numbers) {
+    int maximum = numbers[0];
+    for (int value : numbers) {
+        if (value > maximum) {
+            maximum = value;
+        }
+    }
+    return maximum;
+}
+
+int findMinimum(const vector<int>& numbers) {
+    int minimum = numbers[0];
+    for (int value : numbers) {
+        if (value < minimum) {
+            minimum = value;
+        }
+    }
+    return minimum;
+}
+
+int main() {
+    int count;
+
+    cout << "How many numbers? ";
+    cin >> count;
+
+    if (count <= 0) {
+        cout << "Error: Number of values must be positive." << endl;
+        return 0;
+    }
+
+    vector<int> numbers(count);
+    for (int i = 0; i < count; ++i) {
+        cout << "Enter number " << (i + 1) << ": ";
+        cin >> numbers[i];
+    }
+
+    cout << endl << "Results:" << endl;
+    cout << "Sum:     " << calculateSum(numbers) << endl;
+    cout << fixed << setprecision(1) << "Average: " << calculateAverage(numbers) << endl;
+    cout << "Maximum: " << findMaximum(numbers) << endl;
+    cout << "Minimum: " << findMinimum(numbers) << endl;
+
+    return 0;
+}
 
